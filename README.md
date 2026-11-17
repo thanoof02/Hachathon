@@ -2,6 +2,8 @@
 
 **Feel the pulse of your mind.** Check in. Find calm. Get the right help.
 
+Live website: **https://hachathon-seven.vercel.app**
+
 A React / Next.js / TypeScript mental-wellbeing **website** with REST APIs and a PostgreSQL adapter for Neon. Patient support and therapist workspaces are separate. Changes are published only when the user explicitly requests it. Payments remain in preview mode until a merchant account is supplied.
 
 ## Start on Windows
@@ -90,7 +92,7 @@ The dormant Razorpay adapter prepares single-use merchant QRs, checks captured p
 
 The existing PostgreSQL `Record` model (`owner_id`, `kind`, encrypted `payload`) is unchanged. This revision adds behaviour contracts for kinds `license`, `profile`, public `provider`, `reservation`, and private `appointment`, plus the organisation/payment contracts in `docs/COMMERCE.md`. Licence content stays in the therapist owner namespace; directory entries contain only public profile fields. Reservation IDs are provider/date/time scoped. Therapist appointment copies have their own `appointment:` IDs and never reuse the patient booking's primary key.
 
-**No database schema, migration, Neon project, or remote seed has been applied.** `prisma/schema.prisma` and `prisma/migration.sql` remain prepared definitions. Obtain a separate explicit application instruction before applying SQL. Use a separate Therapulse project in the `thanoof` Neon account; do not use `hasan-buildcon` or `watify`.
+**Database setup completed on 18 November 2026:** a dedicated `hachathon` Neon project was created in the `thanoof` organisation (AWS Singapore, PostgreSQL 18). The initial `records` table and index from `prisma/migration.sql` were applied after explicit user approval, then verified with an encrypted storage round-trip and owner-isolation checks. No remote seed or local-record import was performed. Production credentials are in ignored `.env.vercel.local`; local `.env` retains local demo storage. Future schema application still requires a separate explicit instruction. The existing `hasan-buildcon` and `watify` projects were not changed. See [database setup](docs/DATABASE-SETUP.md).
 
 ## Environment
 
@@ -105,7 +107,7 @@ See `.env.example`. Keep actual values in ignored `.env.local` or deployment sec
 - `PAYMENTS_MODE=preview` by default; merchant keys, webhook secret and approved Route linked-account configuration are server-only and required before any live integration.
 - `APP_ORIGIN`: optional exact public origin. Set it when a TLS reverse proxy changes the internal protocol. A configured origin is authoritative. Arbitrary forwarded-host headers are not trusted.
 
-The production deployment requires a Node-compatible Next.js host, database, and secrets. Static-only hosting cannot serve these REST APIs. No hosted deployment was created for this revision.
+Production is deployed to the dedicated Hachathon Vercel project at https://hachathon-seven.vercel.app, connected to the Hachathon Neon database. The project uses Next.js, Node.js 24.x, the main GitHub branch, and Singapore functions (sin1). Static-only hosting cannot serve these REST APIs. Production variables are scoped to this project; credentials and local records are excluded from deployment source.
 
 ## REST routes
 
@@ -161,7 +163,7 @@ Unit/contract tests cover care guidance, safety overrides, licence validation, o
 
 This is a working local demonstration, not a clinical product. Public sample therapists are fictional. Payments, live video, email delivery, invitations, staffed credential review, registry checks and human community moderation are not connected. AI reflection/vision can only be verified with an authorised API key. Organisation recommendations use privacy-protected aggregate AI when an authorised key is configured and fall back to clearly labelled rules; expression generation remains template based. Peer messages use keyword checks, not clinical monitoring.
 
-Neon is not connected in this checkout. Production deployment, real credential validation, security/retention review, shared rate limiting, distributed scheduling transactions, clinical evaluation, and assistive-technology user testing remain operational work. Automated accessibility tests do not certify that every user or browser can complete every task. Password reset and email verification are not enabled. Malayalam source translations are provided for the core journeys; generated AI prose and third-party content retain an English fallback.
+The dedicated Neon connection and Vercel production deployment have been verified. Real credential validation, security/retention review, shared rate limiting, distributed scheduling transactions, clinical evaluation, and assistive-technology user testing remain operational work. Automated accessibility tests do not certify that every user or browser can complete every task. Password reset and email verification are not enabled. Malayalam source translations are provided for the core journeys; generated AI prose and third-party content retain an English fallback.
 
 Guest aliases are not untraceable network identities. Optional safety contacts are personal data. Guest journal keys stay on the device; an unlocked browser or malicious code can expose local text. AI and rule-based reflections do not diagnose or replace professional judgement.
 

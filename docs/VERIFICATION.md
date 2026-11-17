@@ -1,4 +1,15 @@
-﻿# Local verification — 17 November 2026
+# Verification
+
+## Production — 18 November 2026
+
+- Public URL: https://hachathon-seven.vercel.app. Vercel reported READY, and unauthenticated HTTP/browser checks passed.
+- Dedicated Hachathon Vercel project; Next.js, Node.js 24.x, Singapore functions. Separate Hachathon Neon project, main branch, PostgreSQL 18. Existing Vercel and Neon projects were verified unchanged.
+- The initial schema was applied only after explicit user approval. Encrypted round-trip, owner isolation, duplicate prevention and test cleanup passed against Neon.
+- Live REST checks passed: secure HttpOnly guest session, 12 fictional specialists, private check-in/journal isolation, exact 20% markup, booking/cancellation, unpaid QR preview, cross-site rejection, and no exposed environment-file contents. Temporary records were removed.
+- Live Chrome checks passed: patient home, all four language choices, directory, mobile overflow, and zero uncaught browser errors. Screenshots remain local and ignored.
+- Production secrets are server-only; environment files and local data are excluded from Git and deployment uploads. Payments, live clinician delivery, email and registry approval remain demonstration/unconnected features.
+
+﻿## Local verification — 17 November 2026
 
 Verification baseline: `4102fb4`. The user subsequently authorised publication to thanoof02/Hachathon main. No database migration, live merchant setup, real payment, payout, or website deployment was performed during verification.
 
