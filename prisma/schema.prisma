@@ -1,0 +1,20 @@
+generator client {
+  provider = "prisma-client-js"
+}
+datasource db {
+  provider = "postgresql"
+  url = env("DATABASE_URL")
+}
+// Encrypted domain records; kind selects the validated API contract.
+// Credentials use a SHA-256 normalized email identifier and bcrypt password inside encrypted payload.
+// Guest identity is a signed, HttpOnly session; institution analytics never query member content.
+model Record {
+  id String @id
+  ownerId String @map("owner_id")
+  kind String
+  payload String
+  createdAt DateTime @default(now()) @map("created_at")
+  @@index([ownerId, kind, createdAt])
+  @@map("records")
+}
+
