@@ -62,7 +62,7 @@ After schema approval and application, configure server-only environment variabl
 - `ANTHROPIC_API_KEY`: optional; never prefixed NEXT_PUBLIC_. Without it, reflection uses deterministic rules.
 - `ANTHROPIC_MODEL`: optional model identifier; default `claude-sonnet-4-6`.
 - `PLATFORM_COMMISSION`: default 0.15; illustrative commission for paid sessions.
-- `APP_ORIGIN`: actual deployment origin for cross-origin request checks.
+- `APP_ORIGIN`: optional exact browser-facing origin, such as `https://therapulse.example`, required when a TLS proxy changes the internal protocol. When unset, requests are checked against the incoming Host and request protocol, so both localhost and 127.0.0.1 work when used consistently. A configured origin is authoritative; use that exact address in your browser. Do not trust arbitrary forwarded-host headers.
 
 Deployment target is a Node-compatible Next.js host. Do not deploy as static-only output: REST endpoints require a server. For Sites hosting, an appropriate Next.js-to-Worker adapter and production secrets must be configured and tested first; no hosted Site was created or published in this task.
 

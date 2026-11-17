@@ -1,0 +1,13 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {isAllowedRequestOrigin as allowed} from '../lib/request-origin';
+const local={requestUrl:'http://localhost:3000/api/guest',host:'127.0.0.1:3000'};
+test('Accept browser-facing loopback origin despite Next internal localhost URL',()=>{assert.equal(allowed({...local,origin:'http://127.0.0.1:3000',fetchSite:'same-origin'}),true)});
+test('Accept localhost and alternate development ports when they match Host',()=>{assert.equal(allowed({requestUrl:'http://localhost:3001/api/guest',host:'localhost:3001',origin:'http://localhost:3001'}),true)});
+test('Reject a different host, port, scheme, or unrelated website',()=>{for(const origin of ['http://localhost:3000','http://127.0.0.1:3001','https://127.0.0.1:3000','https://unrelated.example','http://127.0.0.1.evil.example:3000'])assert.equal(allowed({...local,origin}),false,origin)});
+test('Reject cross-site browser requests even with a missing or matching Origin',()=>{for(const origin of [null,'http://127.0.0.1:3000'])assert.equal(allowed({...local,origin,fetchSite:'cross-site'}),false)});
+test('Allow REST clients without Origin',()=>{assert.equal(allowed({...local,origin:null}),true)});
+test('Reject opaque and malformed origins',()=>{for(const origin of ['null','not a URL','http://user:pass@127.0.0.1:3000','http://127.0.0.1:3000/path','http://127.0.0.1:3000/?x=1'])assert.equal(allowed({...local,origin}),false)});
+test('Use configured public origin behind TLS proxies, without trusting forwarded host',()=>{const input={...local,appOrigin:'https://therapulse.example/'};assert.equal(allowed({...input,origin:'https://therapulse.example'}),true);assert.equal(allowed({...input,origin:'http://127.0.0.1:3000'}),false)});
+test('Reject malformed incoming hosts and invalid origin configuration',()=>{assert.equal(allowed({...local,origin:'http://127.0.0.1:3000',host:'127.0.0.1:3000/other'}),false);assert.equal(allowed({...local,origin:'http://127.0.0.1:3000',appOrigin:'not a URL'}),false)});
+test('Support IPv6 loopback authority',()=>{assert.equal(allowed({origin:'http://[::1]:3000',requestUrl:'http://localhost:3000/api/guest',host:'[::1]:3000'}),true)});
