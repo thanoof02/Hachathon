@@ -1,0 +1,2 @@
+import {defineConfig} from '@playwright/test';
+export default defineConfig({testDir:'./tests/browser',fullyParallel:false,workers:1,timeout:60000,expect:{timeout:10000},outputDir:'.data/browser-results',reporter:[['list'],['html',{outputFolder:'.data/browser-report',open:'never'}]],use:{baseURL:process.env.E2E_BASE_URL||'http://127.0.0.1:3000',headless:true,launchOptions:{executablePath:process.env.E2E_BROWSER_PATH||(process.platform==='win32'?'C:/Program Files/Google/Chrome/Application/chrome.exe':undefined)},trace:'retain-on-failure',screenshot:'only-on-failure'}});

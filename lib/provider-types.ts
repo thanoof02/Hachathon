@@ -1,0 +1,10 @@
+export const sessionTimes=['09:00','11:00','14:00','16:00'] as const;
+export const weekDays=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+export type ProviderProfile={bio:string;specialization:string;languages:string;experience:number;fee:number;groupFee:number;free:boolean;sliding:boolean;acceptingNewClients:boolean;availability:string;days:number[];times:string[];modes:string[];duration:number};
+export type PublicProvider={id:string;name:string;title?:string;initials:string;specialization:string;languages:string[];experience:number;rating:number;fee:number;groupFee:number;free:boolean;sliding:boolean;color:string;bio:string;demo:boolean;duration:number;days:number[];times:string[];modes:string[]};
+export type LicenseSummary={status:'missing'|'expired'|'manual_review'|'approved';hasDocument:boolean;name?:string;license?:string;authority?:string;expiry?:string;fileName?:string;submittedAt?:string};
+export type ProviderWorkspace={profile:ProviderProfile;license:LicenseSummary;verified:boolean;published:boolean;commission:number;appointments:Appointment[]};
+export type Appointment={id:string;therapistId:string;date:string;time:string;mode:string;fee:number;status:string;alias:string;rating?:number;therapistName?:string;duration?:number;therapistFee?:number;platformFee?:number;paymentTiming?:'booking'|'after';paymentStatus?:'unpaid'|'paid'|'free'|'included';completedAt?:string};
+export const defaultProfile:ProviderProfile={bio:'',specialization:'general',languages:'English',experience:0,fee:800,groupFee:250,free:false,sliding:false,acceptingNewClients:false,availability:'',days:[1,2,3,4,5],times:['09:00','11:00','14:00','16:00'],modes:['video','audio','chat'],duration:50};
+export function dateInIndia(){return new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Kolkata',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());}
+export function hasCurrentLicense(license:{expiry?:string;hasDocument?:boolean}){return !!license.hasDocument&&!!license.expiry&&license.expiry>=dateInIndia();}

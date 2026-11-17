@@ -16,9 +16,10 @@ export const questions = [
 {title:'How does sharing your feelings feel?',hint:'It is okay if finding the words takes time.',options:['Very comfortable','Mostly comfortable','Depends on the person','Quite difficult','I cannot find the words'],scores:[0,1,2,3,4]},
 {title:'What would feel helpful right now?',hint:'Optional. A small step is still a step.',options:['Someone to listen','Relaxation tools','Professional therapy','Group support','Not sure'],scores:[0,0,0,0,0]}
 ];
+const malayalamCrisis = /ആത്മഹത്യ|ജീവിതം അവസാനിപ്പിക്ക|മരിക്കാൻ തോന്ന|എന്നെത്തന്നെ ഉപദ്രവിക്ക|ജീവിക്കാൻ താൽപ്പര്യമില്ല/;
 const crisisWords = /\b(end my life|suicid(?:e|al)|kill myself|no reason to live|hurt myself|harm myself|want to die|ending my life)\b/i;
 export function analyze(answers:Answer[]):Analysis {
- const urgent = answers.some(a=>(a.question===10 && a.option!==null && a.option>=2)||crisisWords.test(a.comment));
+ const urgent = answers.some(a=>(a.question===10 && a.option!==null && a.option>=2)||(crisisWords.test(a.comment)||malayalamCrisis.test(a.comment)));
  const answered=answers.filter(a=>a.option!==null && a.question<12);
  const burden=answered.reduce((s,a)=>s+(questions[a.question]?.scores[a.option!]??0),0);
  const score=answered.length?Math.max(0,Math.round(100-burden/(answered.length*4)*100)):50;
@@ -31,10 +32,240 @@ export function analyze(answers:Answer[]):Analysis {
 export const riskOrder:Risk[]=['low','mild','moderate','high','crisis'];
 export function enforceSafety(base:Analysis, ai:Analysis):Analysis { const risk=riskOrder[Math.max(riskOrder.indexOf(base.risk_level),riskOrder.indexOf(ai.risk_level))];return {...ai,risk_level:risk,needs_immediate_help:risk==='crisis',recommendations:risk==='crisis'?base.recommendations:ai.recommendations,source:'ai'}; }
 export const therapists = [
-{id:'ananya',name:'Dr. Ananya Rao',initials:'AR',specialization:'anxiety',languages:['English','Hindi','Kannada'],experience:8,rating:4.9,fee:800,groupFee:250,free:true,sliding:true,color:'lavender',bio:'A gentle, collaborative approach to anxiety, self-esteem, and finding your own pace.'},
-{id:'kabir',name:'Kabir Mehta',initials:'KM',specialization:'stress',languages:['English','Hindi'],experience:6,rating:4.8,fee:600,groupFee:200,free:true,sliding:true,color:'peach',bio:'Helping students and professionals move through overwhelm with practical, compassionate tools.'},
-{id:'meera',name:'Dr. Meera Nair',initials:'MN',specialization:'trauma',languages:['English','Kannada'],experience:12,rating:4.9,fee:1200,groupFee:350,free:false,sliding:true,color:'mint',bio:'A supportive space to reconnect with yourself and build a sense of safety.'},
-{id:'arjun',name:'Arjun Sen',initials:'AS',specialization:'depression',languages:['English','Hindi'],experience:7,rating:4.8,fee:700,groupFee:200,free:false,sliding:true,color:'sand',bio:'Working together through low mood, loneliness, and life transitions.'}
+  {
+    "id": "asha",
+    "name": "Asha Menon",
+    "title": "CBT Therapist",
+    "initials": "AM",
+    "specialization": "anxiety",
+    "languages": [
+      "English",
+      "Malayalam"
+    ],
+    "experience": 4,
+    "rating": 0,
+    "fee": 899,
+    "groupFee": 360,
+    "free": true,
+    "sliding": true,
+    "color": "mint",
+    "bio": "Practical, collaborative support for understanding thought patterns and everyday coping."
+  },
+  {
+    "id": "dev",
+    "name": "Dev Varma",
+    "title": "Trauma-Informed Therapist",
+    "initials": "DV",
+    "specialization": "trauma",
+    "languages": [
+      "English",
+      "Malayalam",
+      "Hindi"
+    ],
+    "experience": 5,
+    "rating": 0,
+    "fee": 999,
+    "groupFee": 400,
+    "free": false,
+    "sliding": true,
+    "color": "lavender",
+    "bio": "A patient, choice-led space that respects your pace and sense of safety."
+  },
+  {
+    "id": "nisha",
+    "name": "Nisha Thomas",
+    "title": "Relationship Therapist",
+    "initials": "NT",
+    "specialization": "relationships",
+    "languages": [
+      "English",
+      "Malayalam"
+    ],
+    "experience": 6,
+    "rating": 0,
+    "fee": 1099,
+    "groupFee": 440,
+    "free": false,
+    "sliding": true,
+    "color": "peach",
+    "bio": "Support with communication, connection, and relationship difficulties."
+  },
+  {
+    "id": "rohan",
+    "name": "Rohan Pillai",
+    "title": "Family Therapist",
+    "initials": "RP",
+    "specialization": "family",
+    "languages": [
+      "English",
+      "Malayalam",
+      "Hindi"
+    ],
+    "experience": 7,
+    "rating": 0,
+    "fee": 1299,
+    "groupFee": 520,
+    "free": false,
+    "sliding": true,
+    "color": "sand",
+    "bio": "A space for families to improve communication and understand each other."
+  },
+  {
+    "id": "diya",
+    "name": "Diya Joseph",
+    "title": "Child & Adolescent Therapist",
+    "initials": "DJ",
+    "specialization": "children",
+    "languages": [
+      "English",
+      "Malayalam"
+    ],
+    "experience": 8,
+    "rating": 0,
+    "fee": 899,
+    "groupFee": 360,
+    "free": false,
+    "sliding": true,
+    "color": "mint",
+    "bio": "Age-appropriate support for children, teenagers, and their caregivers."
+  },
+  {
+    "id": "arun",
+    "name": "Arun Mathew",
+    "title": "Speech Therapist",
+    "initials": "AM",
+    "specialization": "speech",
+    "languages": [
+      "English",
+      "Malayalam",
+      "Hindi"
+    ],
+    "experience": 9,
+    "rating": 0,
+    "fee": 699,
+    "groupFee": 280,
+    "free": false,
+    "sliding": true,
+    "color": "lavender",
+    "bio": "Support with communication, speech, and language goals."
+  },
+  {
+    "id": "maya",
+    "name": "Maya Krishnan",
+    "title": "Occupational Therapist",
+    "initials": "MK",
+    "specialization": "occupational",
+    "languages": [
+      "English",
+      "Malayalam"
+    ],
+    "experience": 10,
+    "rating": 0,
+    "fee": 799,
+    "groupFee": 320,
+    "free": false,
+    "sliding": true,
+    "color": "peach",
+    "bio": "Support for participation, independence, and everyday activities."
+  },
+  {
+    "id": "avin",
+    "name": "Avin Das",
+    "title": "Physiotherapist",
+    "initials": "AD",
+    "specialization": "physiotherapy",
+    "languages": [
+      "English",
+      "Malayalam",
+      "Hindi"
+    ],
+    "experience": 4,
+    "rating": 0,
+    "fee": 699,
+    "groupFee": 280,
+    "free": false,
+    "sliding": true,
+    "color": "sand",
+    "bio": "Movement and rehabilitation support tailored to everyday needs."
+  },
+  {
+    "id": "sara",
+    "name": "Sara George",
+    "title": "Career Counsellor",
+    "initials": "SG",
+    "specialization": "career",
+    "languages": [
+      "English",
+      "Malayalam"
+    ],
+    "experience": 5,
+    "rating": 0,
+    "fee": 499,
+    "groupFee": 200,
+    "free": true,
+    "sliding": true,
+    "color": "mint",
+    "bio": "Explore interests, choices, and practical next steps in education and work."
+  },
+  {
+    "id": "neel",
+    "name": "Neel Kumar",
+    "title": "Nutrition Professional",
+    "initials": "NK",
+    "specialization": "nutrition",
+    "languages": [
+      "English",
+      "Malayalam",
+      "Hindi"
+    ],
+    "experience": 6,
+    "rating": 0,
+    "fee": 599,
+    "groupFee": 240,
+    "free": false,
+    "sliding": true,
+    "color": "lavender",
+    "bio": "A supportive conversation about food routines and personal nutrition goals."
+  },
+  {
+    "id": "tara",
+    "name": "Tara Nair",
+    "title": "Art/Music Therapist",
+    "initials": "TN",
+    "specialization": "creative",
+    "languages": [
+      "English",
+      "Malayalam"
+    ],
+    "experience": 7,
+    "rating": 0,
+    "fee": 799,
+    "groupFee": 320,
+    "free": false,
+    "sliding": true,
+    "color": "peach",
+    "bio": "Creative expression through art and music, at your own pace."
+  },
+  {
+    "id": "vikram",
+    "name": "Vikram Shah",
+    "title": "Addiction Counsellor",
+    "initials": "VS",
+    "specialization": "addiction",
+    "languages": [
+      "English",
+      "Malayalam",
+      "Hindi"
+    ],
+    "experience": 8,
+    "rating": 0,
+    "fee": 799,
+    "groupFee": 320,
+    "free": false,
+    "sliding": true,
+    "color": "sand",
+    "bio": "Compassionate support for understanding habits and exploring recovery."
+  }
 ];
 export const i18n = {en:{welcome:"A little care. A little closer to you.",checkin:"Check in with yourself",help:"Need help now?"},hi:{welcome:"थोड़ी देखभाल। खुद के थोड़ा करीब।",checkin:"अपने मन का हाल जानें",help:"अभी मदद चाहिए?"},kn:{welcome:"ಸ್ವಲ್ಪ ಕಾಳಜಿ. ನಿಮಗೆ ಇನ್ನಷ್ಟು ಹತ್ತಿರ.",checkin:"ನಿಮ್ಮ ಮನಸ್ಸನ್ನು ಆಲಿಸಿ",help:"ಈಗ ಸಹಾಯ ಬೇಕೇ?"}};
 export const helplines = {IN:[{name:'Tele MANAS',label:'14416',href:'tel:+9114416?oai_link_source=model_response_hotline',description:'24/7 free mental health support',website:'https://telemanas.mohfw.gov.in/home?oai_link_source=model_response_hotline'}]};
