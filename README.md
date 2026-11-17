@@ -33,7 +33,7 @@ The seed adds four fictional therapist profiles, one institution, 40 anonymized 
 
 ## Included experience
 
-- Calming dashboard, original inline SVG logo/leaf art, locally served Inter/Nunito fonts, subtle pulse motif, dark mode, mobile layouts, keyboard focus, reduced-motion CSS.
+- Expressive botanical dashboard: deep-teal hero, original inline SVG landscape and logo, lavender/peach wellness cards, locally served Inter/Nunito fonts, subtle floating/pulse motion, coordinated dark mode, responsive layouts, keyboard focus, and reduced-motion CSS.
 - Guest alias in a signed HttpOnly session; email/password auth with bcrypt; server-enforced roles; opt-in guest-data migration on signup. Public signup cannot create institution admins.
 - Thirteen optional questions with five or more choices and comments, consent, persisted history, non-diagnostic score and support recommendations.
 - Backend-only Anthropic integration with structured validation and offline rules. Deterministic self-harm/keyword routing cannot be downgraded by AI. Concerning Q11 selections immediately open the support screen before an ordinary result.
